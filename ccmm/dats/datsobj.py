@@ -76,6 +76,10 @@ DATS_TYPES = {
 class DatsObj:
     data = None
 
+    def toJSON(self):
+        return json.dumps(self, default=lambda o: o.__dict__,
+                          sort_keys=True, indent=4)
+
     def __init__(self, dats_type, atts = [], id = ""):
         # check that dats_type is valid
         if dats_type not in DATS_TYPES:
@@ -147,7 +151,8 @@ class DATSEncoder(json.JSONEncoder):
             return o.data
         else:
             return json.JSONEncoder.default(self, o)
-        
+
+
 
 # ------------------------------------------------------
 # DatsObjCache

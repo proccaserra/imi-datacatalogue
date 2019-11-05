@@ -22,12 +22,14 @@ from ccmm.dats.datsobj import DatsObj, DATSEncoder
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+LOCAL =  os.path.dirname(__file__)
 # print(os.path.dirname(__file__))
+print("LOCAL ", LOCAL)
 
-DATS_schemasPath = os.path.join(os.path.dirname(__file__), "../../../../DATS/dats-tools/json-schemas")
-DATS_contextsPath = os.path.join(os.path.dirname(__file__), "../../../../DATS/dats-tools/json-contexts")
+DATS_schemasPath = os.path.join(LOCAL, "../DATS/dats-tools/json-schemas")
+DATS_contextsPath = os.path.join(os.path.dirname(__file__), "../DATS/dats-tools/json-contexts")
 
-# print("DATS:", DATS_schemasPath)
+print("DATS:", DATS_schemasPath)
 
 
 def get_schemas_store(path):
@@ -221,12 +223,11 @@ def inject_context(instance, schema_name):
                 return study_instance
 
 
-
 if __name__ == '__main__':
 
     root_dir = os.path.dirname(os.path.realpath(__file__))
     print("ROOT: ", root_dir)
-    output_dir = '../output/'
+    output_dir = './output/'
 
     INPUT_DC = "./input/IMIPROJECTS.csv"
     df = pd.read_csv(INPUT_DC)
@@ -530,19 +531,19 @@ of great value to leverage the benefits for all stakeholders."),
         DATSEncoder().encode(imi_project_catalogue)
         # imi_data_jstr = json.dumps(cls=DATSEncoder)
 
-        print(imi_project_catalogue.toJSON())
+        # print(imi_project_catalogue.toJSON())
         # imi_data_jstr = json.dumps(imi_project_catalogue.__dict__)
 
         # print("FULL CATALOGUE:", imi_data_jstr)
 
-        # script_dir = os.path.dirname(__file__)
-        # print("DIR", script_dir)
+        script_dir = os.path.dirname(__file__)
+        print("DIR", script_dir)
         filename = 'IMI_datacatalogue_as_DATS.json'
-        with open(filename, 'w', encoding='utf-8') as f:
+        with open(join(output_dir, filename), 'w', encoding='utf-8') as f:
             json.dump(imi_project_catalogue.toJSON(), f)
 
         # print("validating: ", script_dir, filename)
-        # validate_dataset(script_dir, filename, 1)
+        validate_dataset(script_dir, filename, 1)
 
         # script_dir = os.path.dirname(__file__)
         # this_instance = inject_context(filename, "Dataset")
